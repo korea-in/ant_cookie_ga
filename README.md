@@ -33,4 +33,4 @@ p5.js 기반으로 구현되며, 개미는 세대를 거듭할수록 점점 더 
 ## 실행 방법
 1. 레포지토리를 클론
    ```bash
-   git clone https://github.com/yourname/ant_cookie_ga.git
+   git clone https://github.com/korea-in/ant_cookie_ga.git
