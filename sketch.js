@@ -18,8 +18,8 @@ function next_generation() {
   // 새 세대 채우기
   ants = [];
   for (let i = 0; i < ONE_GEN_ANT_COUNT; i++) {
-    let gen_a = shuffle(parents_ant_gen)[0];
-    let gen_b = shuffle(parents_ant_gen)[0];
+  let gen_a = parents_ant_gen[Math.floor(Math.random() * parents_ant_gen.length)];
+  let gen_b = parents_ant_gen[Math.floor(Math.random() * parents_ant_gen.length)];
     let tmp_ant = new Ant(gen_a, gen_b);
     ants.push(tmp_ant);
   }

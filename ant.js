@@ -3,7 +3,7 @@ class Ant {
   angle_gen = [];
   // 개미의 최초 시작 지점
   current_x = 50;
-  current_y = CANVAS_HEIGHT / 2;
+  current_y = 50;
   // 개미의 최초 각도
   current_angle = 0;
   // 개미의 걸음 수

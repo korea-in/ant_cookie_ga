@@ -3,8 +3,8 @@ class Cookie {
   y = 0;
 
   constructor() {
-    this.x = Math.random() * (CANVAS_WIDTH - 60) + 30;
-    this.y = Math.random() * (CANVAS_HEIGHT - 60) + 30;
+    this.x = Math.random() * (CANVAS_WIDTH - (COOKIE_PADDING * 2)) + COOKIE_PADDING;
+    this.y = Math.random() * (CANVAS_HEIGHT - (COOKIE_PADDING * 2)) + COOKIE_PADDING;
   }
 
   show() {
