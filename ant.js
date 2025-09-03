@@ -22,10 +22,16 @@ class Ant {
     } else {
       let cut = Math.floor(Math.random() * ONE_GEN_ANGLE_COUNT);
       for (let i = 0; i < ONE_GEN_ANGLE_COUNT; i++) {
-        if (i < cut) {
-          this.angle_gen.push(gen_a.angle_gen[i]);
+        if (Math.random() < MUTATION_COEFFICIENT) {
+          let n = Math.random() * (ANT_ROTATE_ANGLE * 2 + 1) - ANT_ROTATE_ANGLE;
+          this.angle_gen.push(n);
         } else {
-          this.angle_gen.push(gen_b.angle_gen[i]);
+          // 정상 교차
+          if (i < cut) {
+            this.angle_gen.push(gen_a.angle_gen[i]);
+          } else {
+            this.angle_gen.push(gen_b.angle_gen[i]);
+          }
         }
       }
       this.current_angle = this.angle_gen[0];
