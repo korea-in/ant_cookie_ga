@@ -38,12 +38,12 @@ function setup() {
 
   console.log(ants[0].current_angle);
     
-  background(220);
+  drawGrassBackground(220);
 }
 
 // p5js 반복문 부분
 function draw() {
-  background(220);
+  drawGrassBackground(220);
   for(var i=0; i<ONE_GEN_ANT_COUNT; i++) {
     if(i >= total_ant_step/ANT_START_DELAY) break;
     ants[i].move();

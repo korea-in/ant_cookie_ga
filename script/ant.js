@@ -41,7 +41,9 @@ class Ant {
   // 쿠키와 거리 측정하여 정수형으로 반환
   get_weight(cookie) {
     let d = dist(this.current_x, this.current_y, cookie.x, cookie.y);
-    return floor(1 / (d + 1) * 100);  // +1로 0회피
+    let maxDist = dist(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT); // 대각선 거리 = 최대 거리
+    let w = maxDist - d;
+    return Math.max(1, floor(w));
   }
 
   // 개미 한 걸음 움직이기 함수
