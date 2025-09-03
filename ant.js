@@ -5,7 +5,7 @@ class Ant {
   current_x = 50;
   current_y = CANVAS_HEIGHT / 2;
   // 개미의 최초 각도
-  current_angle = random(0, 360);
+  current_angle = 0;
   // 개미의 걸음 수
   step = 0;
   
@@ -14,20 +14,22 @@ class Ant {
   // 생성자 함수, 부모 유전자가 없으면 랜덤 생성
   constructor(gen_a, gen_b) {
     if (gen_a == null && gen_b == null) {
+      this.current_angle = random(0, 360);
       for (let i = 0; i < ONE_GEN_ANGLE_COUNT; i++) {
         let n = Math.random() * (ANT_ROTATE_ANGLE * 2 + 1) - ANT_ROTATE_ANGLE;
         this.angle_gen.push(n);
       }
     } else {
-    let cut = Math.floor(Math.random() * ONE_GEN_ANGLE_COUNT);
-    for (let i = 0; i < ONE_GEN_ANGLE_COUNT; i++) {
-      if (i < cut) {
-        this.angle_gen.push(gen_a.angle_gen[i]);
-      } else {
-        this.angle_gen.push(gen_b.angle_gen[i]);
+      let cut = Math.floor(Math.random() * ONE_GEN_ANGLE_COUNT);
+      for (let i = 0; i < ONE_GEN_ANGLE_COUNT; i++) {
+        if (i < cut) {
+          this.angle_gen.push(gen_a.angle_gen[i]);
+        } else {
+          this.angle_gen.push(gen_b.angle_gen[i]);
+        }
       }
+      this.current_angle = this.angle_gen[0];
     }
-  }
   }
 
   // 쿠키와 거리 측정하여 정수형으로 반환
@@ -44,8 +46,8 @@ class Ant {
     }
     this.current_angle += this.angle_gen[this.step];
     let rad = radians(this.current_angle);
-    this.current_x += cos(rad) * 1;
-    this.current_y += sin(rad) * 1;
+    this.current_x += cos(rad) * ANT_SETP_SIZE;
+    this.current_y += sin(rad) * ANT_SETP_SIZE;
     this.step++;
   }
 
