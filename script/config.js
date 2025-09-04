@@ -1,4 +1,4 @@
-let ONE_GEN_ANGLE_COUNT = 550; // 한 세대당 유전자에 각도 개수
+let ONE_GEN_ANGLE_COUNT = 350; // 한 세대당 유전자에 각도 개수
 let ONE_GEN_ANT_COUNT = 50; // 한 세대당 개미 마리 수
 
 let CANVAS_WIDTH = 500; // 캔버스의 가로 길이

@@ -28,22 +28,19 @@ function next_generation() {
 // p5js 초기화
 function setup() {
   createCanvas(CANVAS_WIDTH, CANVAS_HEIGHT);
+  grassLayer = createGraphics(width, height);
   ants = [];
   cookie = new Cookie();
-
   for(var i=0; i<ONE_GEN_ANT_COUNT; i++) {
     tmp_ant = new Ant(null, null);
     ants.push(tmp_ant);
   }
-
-  console.log(ants[0].current_angle);
-    
-  drawGrassBackground(220);
+  drawGrassBackground(grassLayer);
 }
 
 // p5js 반복문 부분
 function draw() {
-  drawGrassBackground(220);
+  image(grassLayer, 0, 0);
   for(var i=0; i<ONE_GEN_ANT_COUNT; i++) {
     if(i >= total_ant_step/ANT_START_DELAY) break;
     ants[i].move();
