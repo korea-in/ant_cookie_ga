@@ -2,26 +2,28 @@ class Ant {
   // 개미의 각도 유전자
   angle_gen = [];
   // 개미의 최초 시작 지점
-  current_x = 50;
-  current_y = 50;
+  current_x = PADDING;
+  current_y = PADDING;
   // 개미의 최초 각도
   current_angle = 0;
   // 개미의 걸음 수
   step = 0;
   
   ended = false;
+  deaded = false;
+  arrived = false;
 
   // 생성자 함수, 부모 유전자가 없으면 랜덤 생성
   constructor(gen_a, gen_b) {
     if (gen_a == null && gen_b == null) {
       this.current_angle = random(0, 360);
-      for (let i = 0; i < ONE_GEN_ANGLE_COUNT; i++) {
+      for (let i = 0; i < ONE_GEN_STEP_COUNT; i++) {
         let n = Math.random() * (ANT_ROTATE_ANGLE * 2 + 1) - ANT_ROTATE_ANGLE;
         this.angle_gen.push(n);
       }
     } else {
-      let cut = Math.floor(Math.random() * ONE_GEN_ANGLE_COUNT);
-      for (let i = 0; i < ONE_GEN_ANGLE_COUNT; i++) {
+      let cut = Math.floor(Math.random() * ONE_GEN_STEP_COUNT);
+      for (let i = 0; i < ONE_GEN_STEP_COUNT; i++) {
         if (Math.random() < MUTATION_COEFFICIENT) {
           let n = Math.random() * (ANT_ROTATE_ANGLE * 2 + 1) - ANT_ROTATE_ANGLE;
           this.angle_gen.push(n);
@@ -43,11 +45,20 @@ class Ant {
     let d = dist(this.current_x, this.current_y, cookie.x, cookie.y);
     let maxDist = dist(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT); // 대각선 거리 = 최대 거리
     let w = maxDist - d;
+    let survival = this.step / ONE_GEN_STEP_COUNT;
+
+    // 너무 빨리 죽은 개미는 낮게 평가
+    if(this.deaded) w = w * survival;
+    
+    // 빨리 쿠키에 도착한 개미는 높게 평가
+    if(this.arrived) w = w * (1 / survival);
+
     return Math.max(1, floor(w));
   }
 
   // 개미 한 걸음 움직이기 함수
   move() {
+    if (this.ended) return;
     if (this.step >= this.angle_gen.length) {
       this.ended = true;
       return;
@@ -56,13 +67,50 @@ class Ant {
     let rad = radians(this.current_angle);
     this.current_x += cos(rad) * ANT_SETP_SIZE;
     this.current_y += sin(rad) * ANT_SETP_SIZE;
+
+    // 나무 충돌 확인
+    for (let tree of trees) {
+      let d = dist(this.current_x, this.current_y, tree.x, tree.y);
+      if (d < tree.size / 2) {
+        this.ended = true;
+        this.deaded = true;
+        return;
+      }
+    }
+
+    // 벽 충돌 확인
+    if (
+      this.current_x < 0 ||
+      this.current_x > CANVAS_WIDTH ||
+      this.current_y < 0 ||
+      this.current_y > CANVAS_HEIGHT
+    ) {
+      this.ended = true;
+      this.deaded = true;
+      return;
+    }
+
+    // 쿠키 충돌 확인
+    let d = dist(this.current_x, this.current_y, cookie.x, cookie.y);
+    if (d < cookie.size / 2) {
+      this.ended = true;
+      this.arrived = true;
+      return;
+    }
+
     this.step++;
   }
 
   // 현재 개미 각도와 위치를 기반하여 그림 그리기 함수
   show() {
     noStroke();
-    fill(0);
+    if (this.deaded) {
+      fill(150);  // 죽은 개미 → 회색
+    } else if (this.arrived) {
+      fill(255, 0, 0);   // 빨간색
+    } else {
+      fill(0);    // 살아있는 개미 → 검은색
+    }
 
     let rad = radians(this.current_angle);
 
