@@ -1,9 +1,11 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <link rel="stylesheet" href="./main.css" />
     <script src="./script/p5.min.js"></script>
   </head>
   <body>
+    <script src="./script/jquery-3.7.1.min.js"></script>
     <script src="./script/util_function.js"></script>
     <script src="./script/graphic.js"></script>
     <script src="./script/config.js"></script>
@@ -11,5 +13,71 @@
     <script src="./script/tree.js"></script>
     <script src="./script/cookie.js"></script>
     <script src="./sketch.js"></script>
+    <div id="score-board">
+      <a></a>
+      <a>현재 세대: <span id="s-gen"></span></a>
+      <a>|</a>
+      <a>죽은 개미: <span id="s-daed"></span></a>
+      <a>|</a>
+      <a>생존 개미: <span id="s-alive"></span></a>
+      <a>|</a>
+      <a>도착한 개미: <span id="s-succ"></span></a>
+      <a></a>
+    </div>
+    <div style="display: flex;">
+      <div id="ctl-box">
+        <a style="font-weight: bold; font-size: 13px; text-align: center; color:#010116; padding-bottom: 10px">유전자 알고리즘을 활용한<br>쿠키 찾기 프로그램</a>
+        <div>
+          한 세대당 개미 마리 수: <span id="ONE_GEN_ANT_COUNT_val">50</span><br>
+          <input id="ONE_GEN_ANT_COUNT" type="range" step="1" min="10" max="100" value="50"
+                oninput="document.getElementById('ONE_GEN_ANT_COUNT_val').textContent=this.value">
+        </div>
+
+        <div>
+          한 세대당 유전자에 걸음 수: <span id="ONE_GEN_STEP_COUNT_val">500</span><br>
+          <input id="ONE_GEN_STEP_COUNT" type="range" step="1" min="300" max="700" value="500"
+                oninput="document.getElementById('ONE_GEN_STEP_COUNT_val').textContent=this.value">
+        </div>
+
+        <div>
+          1 걸음당 거리: <span id="ANT_SETP_SIZE_val">1.2</span><br>
+          <input id="ANT_SETP_SIZE" type="range" step="0.1" min="1.0" max="2.0" value="1.2"
+                oninput="document.getElementById('ANT_SETP_SIZE_val').textContent=this.value">
+        </div>
+
+        <div>
+          1 걸음당 회전 가능한 각도: <span id="ANT_ROTATE_ANGLE_val">10</span><br>
+          <input id="ANT_ROTATE_ANGLE" type="range" step="1" min="1" max="179" value="10"
+                oninput="document.getElementById('ANT_ROTATE_ANGLE_val').textContent=this.value">
+        </div>
+
+        <div>
+          죽은 개미 배재 계수: <span id="DAEDED_COEFFICIENT_val">0.6</span><br>
+          <input id="DAEDED_COEFFICIENT" type="range" step="0.1" min="0.0" max="1.0" value="0.6"
+                oninput="document.getElementById('DAEDED_COEFFICIENT_val').textContent=this.value">
+        </div>
+
+        <div>
+          쿠키에 도달한 개미 가산 계수: <span id="ARRIVED_COEFFICIENT_val">3.0</span><br>
+          <input id="ARRIVED_COEFFICIENT" type="range" step="0.1" min="1.0" max="10.0" value="3.0"
+                oninput="document.getElementById('ARRIVED_COEFFICIENT_val').textContent=this.value">
+        </div>
+
+        <div>
+          돌연변이 유전자 생성 확률: <span id="MUTATION_COEFFICIENT_val">0.005</span><br>
+          <input id="MUTATION_COEFFICIENT" type="range" step="0.001" min="0.000" max="0.100" value="0.005"
+                oninput="document.getElementById('MUTATION_COEFFICIENT_val').textContent=this.value">
+        </div>
+
+        <div>
+          장애물 개수: <span id="TREE_COUNT_val">5</span><br>
+          <input id="TREE_COUNT" type="range" step="1" min="1" max="20" value="5"
+                oninput="document.getElementById('TREE_COUNT_val').textContent=this.value">
+        </div>
+
+        <div id="submit-btn">시작하기</div>
+      </div>
+      <div id="sketch-container"></div>
+    </div>
   </body>
 </html>

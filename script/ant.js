@@ -8,6 +8,8 @@ class Ant {
   current_angle = 0;
   // 개미의 걸음 수
   step = 0;
+  // 가장 가까운 움직임
+  shortest_dist = 9999;
   
   ended = false;
   deaded = false;
@@ -43,18 +45,32 @@ class Ant {
   // 쿠키와 거리 측정하여 정수형으로 반환
   get_weight(cookie) {
     let d = dist(this.current_x, this.current_y, cookie.x, cookie.y);
-    let maxDist = dist(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT); // 대각선 거리 = 최대 거리
-    let w = maxDist - d;
+    let maxDist = dist(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+
+    // 기본 점수는 가장 가까웠던 순간 기준
+    let w = maxDist - this.shortest_dist;
+
     let survival = this.step / ONE_GEN_STEP_COUNT;
 
-    // 너무 빨리 죽은 개미는 낮게 평가
-    if(this.deaded) w = w * survival;
-    
-    // 빨리 쿠키에 도착한 개미는 높게 평가
-    if(this.arrived) w = w * (1 / survival);
+    // 1) 너무 빨리 죽은 개미는 낮게 평가
+    if (this.deaded) {
+      w = w * survival;
+    }
+
+    // 2) 빨리 쿠키에 도착한 개미는 높게 평가
+    if (this.arrived) {
+      w = w * (1 / survival);
+    }
+
+    // 3) 현재 거리가 최단 거리보다 멀어졌다면 페널티 적용
+    if (d > this.shortest_dist) {
+      let penalty = 1 / (1 + (d - this.shortest_dist)); 
+      w = w * penalty;
+    }
 
     return Math.max(1, floor(w));
   }
+
 
   // 개미 한 걸음 움직이기 함수
   move() {
@@ -92,11 +108,13 @@ class Ant {
 
     // 쿠키 충돌 확인
     let d = dist(this.current_x, this.current_y, cookie.x, cookie.y);
+    if(this.shortest_dist > d) this.shortest_dist = d;
     if (d < cookie.size / 2) {
       this.ended = true;
       this.arrived = true;
       return;
     }
+
 
     this.step++;
   }

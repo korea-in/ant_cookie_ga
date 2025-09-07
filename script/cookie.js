@@ -5,10 +5,8 @@ class Cookie {
   chips = []; // 초콜릿칩 배열
 
   constructor() {
-    this.x = CANVAS_WIDTH - PADDING;
-    this.y = CANVAS_HEIGHT - PADDING;
-    //this.x = Math.random() * (CANVAS_WIDTH - (PADDING * 2)) + PADDING;
-    //this.y = Math.random() * (CANVAS_HEIGHT - (PADDING * 2)) + PADDING;
+    this.x = Math.random() * (CANVAS_WIDTH - (PADDING * 2)) + PADDING;
+    this.y = Math.random() * (CANVAS_HEIGHT - (PADDING * 2)) + PADDING;
 
     // 초콜릿칩 고정 생성
     let chipCount = 10;

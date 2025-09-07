@@ -6,9 +6,9 @@ function drawGrassBackground(pg) {
     for (let x = 0; x < pg.width; x++) {
       let n = noise(x * noiseScale, y * noiseScale);
 
-      let r = lerp(240, 220, n);
-      let g = lerp(255, 230, n);
-      let b = lerp(200, 190, n);
+      let r = lerp(240, 200, n);
+      let g = lerp(255, 210, n);
+      let b = lerp(200, 170, n);
 
       let idx = 4 * (y * pg.width + x);
       pg.pixels[idx] = r;

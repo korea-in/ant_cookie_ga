@@ -1,4 +1,43 @@
 total_ant_step = 0;
+generation = 1;
+
+$(document).ready(function() {
+  $("#submit-btn").on("click", function() {
+    console.log($("#ONE_GEN_STEP_COUNT").val());
+    console.log($("#ONE_GEN_ANT_COUNT").val());
+    console.log($("#TREE_COUNT").val());
+    console.log($("#ANT_ROTATE_ANGLE").val());
+    console.log($("#ANT_SETP_SIZE").val());
+    console.log($("#MUTATION_COEFFICIENT").val());
+    console.log($("#DAEDED_COEFFICIENT").val());
+    console.log($("#ARRIVED_COEFFICIENT").val());
+
+    ONE_GEN_STEP_COUNT   = $("#ONE_GEN_STEP_COUNT").val();
+    ONE_GEN_ANT_COUNT    = $("#ONE_GEN_ANT_COUNT").val();
+    TREE_COUNT           = $("#TREE_COUNT").val();
+    ANT_ROTATE_ANGLE     = $("#ANT_ROTATE_ANGLE").val();
+    ANT_SETP_SIZE        = $("#ANT_SETP_SIZE").val();
+    MUTATION_COEFFICIENT = $("#MUTATION_COEFFICIENT").val();
+    DAEDED_COEFFICIENT   = $("#DAEDED_COEFFICIENT").val();
+    ARRIVED_COEFFICIENT  = $("#ARRIVED_COEFFICIENT").val();
+    
+    ants = [];
+    trees = [];
+    total_ant_step = 0;
+    cookie = new Cookie();
+    for(var i=0; i<ONE_GEN_ANT_COUNT; i++) {
+      tmp_ant = new Ant(null, null);
+      ants.push(tmp_ant);
+    }
+    
+    for(var i=0; i<TREE_COUNT; i++) {
+      tmp_tree = new Tree();
+      trees.push(tmp_tree);
+    }
+    
+    drawGrassBackground(grassLayer);
+  });
+});
 
 // 다음 세대로 넘어가는 초기화 및 유전자 배합 함수
 function next_generation() {
@@ -25,11 +64,31 @@ function next_generation() {
     let tmp_ant = new Ant(gen_a, gen_b);
     ants.push(tmp_ant);
   }
+  generation += 1;
 }
+
+function updateScoreBoard() {
+  // 현재 세대
+  document.getElementById("s-gen").textContent = generation;
+
+  // 죽은 개미 수
+  let dead = ants.filter(a => a.ended && !a.arrived).length;
+  document.getElementById("s-daed").textContent = dead;
+
+  // 도착한 개미 수
+  let succ = ants.filter(a => a.arrived).length;
+  document.getElementById("s-succ").textContent = succ;
+
+  // 생존 개미 수 (아직 살아있는 개미)
+  let alive = ONE_GEN_ANT_COUNT - dead - succ;
+  document.getElementById("s-alive").textContent = alive;
+}
+
 
 // p5js 초기화
 function setup() {
-  createCanvas(CANVAS_WIDTH, CANVAS_HEIGHT);
+  let cnv = createCanvas(CANVAS_WIDTH, CANVAS_HEIGHT);
+  cnv.parent("sketch-container");
   grassLayer = createGraphics(width, height);
   ants = [];
   trees = [];
@@ -72,4 +131,6 @@ function draw() {
   }
   
   cookie.show();
+
+  updateScoreBoard();
 }
